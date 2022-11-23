@@ -1,20 +1,24 @@
 #include "Header.h"
 #include <stdio.h>
 #include <iostream>
+#include <complex>
 
 
 using namespace std;
-Equalization::Equalization(double coefficent, double degree) {
+
+template<typename T>
+Equalization<T>::Equalization(T coefficent, double degree) {
         if (coefficent != 0) {
-            this->head = new list;
+            this->head = new list<T>;
             this->head->degree = degree;
             this->head->coefficent = coefficent;
             this->head->next = NULL;
             count = 1;
         }
     }
-Equalization:: ~Equalization() {
-        list* p;
+template<typename T>
+Equalization<T>:: ~Equalization() {
+        list<T>* p;
         count = 0;
         while (p = head)
         {
@@ -23,15 +27,18 @@ Equalization:: ~Equalization() {
         }
  }
 
-list* Equalization::GetHead()
+template<typename T>
+list<T>* Equalization<T>::GetHead()
 {
     return head;
 }
 
-    void Equalization::SetHead(list* head) { this->head = head; }
+template<typename T>
+    void Equalization<T>::SetHead(list<T>* head) { this->head = head; }
 
-    bool Equalization::DetectOldDegree(double coefficent, double degree) {
-        list* FunctionHead = GetHead();
+    template<typename T>
+    bool Equalization<T>::DetectOldDegree(T coefficent, double degree) {
+        list<T>* FunctionHead = GetHead();
         while (FunctionHead) {
             if (FunctionHead->degree == degree) {
                 FunctionHead->coefficent = FunctionHead->coefficent + coefficent;
@@ -43,13 +50,14 @@ list* Equalization::GetHead()
         return false;
     }
 
-    void Equalization::Set(double coefficent, double degree)
+    template<typename T>
+    void Equalization<T>::Set(T coefficent, double degree)
     {
         if (!DetectOldDegree(coefficent, degree))
         {
-            if (coefficent != 0) {
-                list* pointer;
-                pointer = new list;
+            if (coefficent != T(0)) {
+                list<T>* pointer;
+                pointer = new list<T>;
                 pointer->coefficent = coefficent;
                 pointer->degree = degree;
                 pointer->next = this->head;
@@ -60,11 +68,12 @@ list* Equalization::GetHead()
 
     }
 
-    int Equalization::DeleteElement(double degree)
+    template<typename T>
+    int Equalization<T>::DeleteElement(double degree)
     {
         int NowCount = 0;
-        list* FunctionHead = GetHead();
-        list* pred = FunctionHead;
+        list<T>* FunctionHead = GetHead();
+        list<T>* pred = FunctionHead;
         while (NowCount < count)
         {
             if (FunctionHead->degree == degree)
@@ -92,12 +101,13 @@ list* Equalization::GetHead()
         return 0;
     }
 
-    void  Equalization::Derivative() {
-        list* FunctionHead = GetHead();
+    template<typename T>
+    void  Equalization<T>::Derivative() {
+        list<T>* FunctionHead = GetHead();
         
         while (FunctionHead)
         {
-            FunctionHead -> coefficent = FunctionHead -> coefficent * FunctionHead->degree;
+            FunctionHead -> coefficent = FunctionHead -> coefficent * T(FunctionHead->degree);
             FunctionHead -> degree--;
             FunctionHead = FunctionHead->next;
 
@@ -106,8 +116,9 @@ list* Equalization::GetHead()
 
     }
 
-    void Equalization::Multiplication(double value) {
-        list* FunctionHead = GetHead();
+    template<typename T>
+    void Equalization<T>::Multiplication(T value) {
+        list<T>* FunctionHead = GetHead();
         while (FunctionHead) {
             FunctionHead->coefficent = FunctionHead->coefficent * value;
             FunctionHead = FunctionHead->next;
@@ -115,8 +126,9 @@ list* Equalization::GetHead()
         cout << "\nСкалярное произведение высчитано...\n";
     }
 
-    void Equalization::Calculation(double x) {
-        list* FunctionHead = GetHead();
+    template<typename T>
+    void Equalization<T>::Calculation(T x) {
+        list<T>* FunctionHead = GetHead();
         double sum = 0;
         while (FunctionHead) {
             sum += FunctionHead->coefficent * pow(x, FunctionHead->degree);
@@ -125,10 +137,11 @@ list* Equalization::GetHead()
         cout << "При x=" << x << " значение последовательности равно " << sum << endl;
     }
 
-    void Equalization:: operator -(Equalization& src)
+    template<typename T>
+    void Equalization<T>:: operator -(Equalization& src)
     {
-        list* FunctionHead = GetHead();
-        list* StartHeadB = src.head;
+        list<T>* FunctionHead = GetHead();
+        list<T>* StartHeadB = src.head;
         bool SearchSuccesesful;
         while (src.head) {
             SearchSuccesesful = false;
@@ -151,10 +164,11 @@ list* Equalization::GetHead()
         src.head = StartHeadB;
     }
 
-    void  Equalization:: operator +(Equalization& src)
+    template<typename T>
+    void  Equalization<T>:: operator +(Equalization& src)
     {
-        list* FunctionHead = GetHead();
-        list* StartHeadB = src.head;
+        list<T>* FunctionHead = GetHead();
+        list<T>* StartHeadB = src.head;
         bool SearchSuccesesful;
         while (src.head) {
             SearchSuccesesful = false;
@@ -176,9 +190,10 @@ list* Equalization::GetHead()
         src.head = StartHeadB;
     }
 
-    int Equalization:: operator[](double degree)
+    template<typename T>
+    int Equalization<T>:: operator[](double degree)
     {
-        list* FunctionHead = GetHead();
+        list<T>* FunctionHead = GetHead();
         while (FunctionHead) {
             if (FunctionHead->degree == degree)
             {
@@ -198,29 +213,7 @@ list* Equalization::GetHead()
     }
 
 
-    ostream& operator<<(ostream& os, Equalization obj)
-{
-    bool FirstStart = true;
-    cout << "\nНаша последовательность: ";
-    while (obj.head) {
-        if (obj.head->coefficent == 0)
-        {
-            obj.DeleteElement(obj.head->degree);
-            FirstStart = true;
-        }
-        if (!FirstStart && obj.head->coefficent > 0) cout << "+";
-        if (obj.head->coefficent != 1) cout << obj.head->coefficent;
-        if (obj.head->degree != 0) cout << "x";
-        else cout << obj.head->coefficent;
-        if (obj.head->degree < 0) { cout << "^(" << obj.head->degree << ")"; }
-        else if (obj.head->degree != 1 && obj.head->degree != 0) cout << "^" << obj.head->degree;
-
-        obj.head = obj.head->next;
-        FirstStart = false;
-    }
-    cout << "\n";
-    return os;
-}
+    
 
 EClassException::EClassException(const char* err) {
         strncpy_s(_err, err, 255);
@@ -230,3 +223,9 @@ EClassException::EClassException(const char* err) {
     {
         std::cout << _err << std::endl;
     }
+
+ template class Equalization<int>;
+ template class Equalization<float>;
+ template class Equalization<double>;
+ template class Equalization<complex<float>>;
+ template class Equalization<complex<double>>;

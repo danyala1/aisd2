@@ -2,35 +2,39 @@
 #include <iostream>
 
 using namespace std;
+
+template<typename T>
 struct list {
     double degree;
-    double coefficent;
+    T coefficent;
     list* next;
 };
+
+template<typename T>
 class Equalization
 {
 public:
     
-    list *head = nullptr;
+    list<T> *head = nullptr;
     int count = 0;
-    Equalization(double coefficent, double degree);
+    Equalization(T coefficent, double degree);
     ~Equalization();
 
-    list* GetHead();
+    list<T>* GetHead();
 
-    void SetHead(list* head);
+    void SetHead(list<T>* head);
 
-    bool DetectOldDegree(double coefficent, double degree);
+    bool DetectOldDegree(T coefficent, double degree);
 
-    void Set(double coefficent, double degree);
+    void Set(T coefficent, double degree);
 
     int DeleteElement(double degree);
 
     void Derivative();
 
-    void Multiplication(double value);
+    void Multiplication(T value);
 
-    void Calculation(double x);
+    void Calculation(T x);
 
 
     void operator -(Equalization& src);
@@ -40,7 +44,7 @@ public:
 
     int operator[](double degree);
 
-    friend ostream& operator<<(ostream& os, Equalization obj);
+    //friend ostream& operator<<(ostream& os, Equalization obj);
 };
 
 
