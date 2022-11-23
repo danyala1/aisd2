@@ -8,14 +8,17 @@ using namespace std;
 
 template<typename T>
 Equalization<T>::Equalization(T coefficent, double degree) {
-        if (coefficent != 0) {
+        if (coefficent != T(0)) {
             this->head = new list<T>;
             this->head->degree = degree;
             this->head->coefficent = coefficent;
             this->head->next = NULL;
             count = 1;
         }
-    }
+}
+
+
+
 template<typename T>
 Equalization<T>:: ~Equalization() {
         list<T>* p;
@@ -129,9 +132,9 @@ template<typename T>
     template<typename T>
     void Equalization<T>::Calculation(T x) {
         list<T>* FunctionHead = GetHead();
-        double sum = 0;
+        T sum = 0;
         while (FunctionHead) {
-            sum += FunctionHead->coefficent * pow(x, FunctionHead->degree);
+            sum += FunctionHead->coefficent * T(pow(x, FunctionHead->degree));
             FunctionHead = FunctionHead->next;
         }
         cout << "ѕри x=" << x << " значение последовательности равно " << sum << endl;
@@ -157,7 +160,7 @@ template<typename T>
             }
             if (!SearchSuccesesful)
             {
-                Set(src.head->coefficent * (-1), src.head->degree);
+                Set(src.head->coefficent * T(-1), src.head->degree);
             }
             src.head = src.head->next;
         }
@@ -177,7 +180,7 @@ template<typename T>
                 {
                     SearchSuccesesful = true;
                     FunctionHead->coefficent += src.head->coefficent;
-                    if (FunctionHead->coefficent == 0) count--;
+                    if (FunctionHead->coefficent == T(0)) count--;
                 }
                 FunctionHead = FunctionHead->next;
             }

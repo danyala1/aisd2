@@ -31,6 +31,54 @@ ostream& operator<<(ostream& os, Equalization<T> obj)
     return os;
 }
 
+ostream& operator<< (ostream& os, Equalization<complex<float>> obj)
+{
+    bool FirstStart = true;
+    cout << "\nНаша последовательность: ";
+    while (obj.head) {
+        if (real(obj.head->coefficent) == 0 and imag(obj.head->coefficent) == 0)
+        {
+            obj.DeleteElement(obj.head->degree);
+            FirstStart = true;
+        }
+        if (!FirstStart && real(obj.head->coefficent) > 0) cout << "+";
+        if (obj.head->coefficent != complex<float>(1)) cout << obj.head->coefficent;
+        if (obj.head->degree != 0) cout << "x";
+        else cout << obj.head->coefficent;
+        if (obj.head->degree < 0) { cout << "^(" << obj.head->degree << ")"; }
+        else if (obj.head->degree != 1 && obj.head->degree != 0) cout << "^" << obj.head->degree;
+
+        obj.head = obj.head->next;
+        FirstStart = false;
+    }
+    cout << "\n";
+    return os;
+}
+
+ostream& operator<< (ostream& os, Equalization<complex<double>> obj)
+{
+    bool FirstStart = true;
+    cout << "\nНаша последовательность: ";
+    while (obj.head) {
+        if (real(obj.head->coefficent) == 0 and imag(obj.head->coefficent) == 0)
+        {
+            obj.DeleteElement(obj.head->degree);
+            FirstStart = true;
+        }
+        if (!FirstStart && real(obj.head->coefficent) > 0) cout << "+";
+        if (obj.head->coefficent != complex<double>(1)) cout << obj.head->coefficent;
+        if (obj.head->degree != 0) cout << "x";
+        else cout << obj.head->coefficent;
+        if (obj.head->degree < 0) { cout << "^(" << obj.head->degree << ")"; }
+        else if (obj.head->degree != 1 && obj.head->degree != 0) cout << "^" << obj.head->degree;
+
+        obj.head = obj.head->next;
+        FirstStart = false;
+    }
+    cout << "\n";
+    return os;
+}
+
 
 double CheckDegree()
 {
