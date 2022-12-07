@@ -118,52 +118,6 @@ T CheckCoefficient()
 }
 
 
-/**template<typename T>
-void MenuInputComplex()
-{
-    system("clear");
-
-    cout << "Create poilynominal menu\n\n"
-        << endl;
-
-    cout << "Order of Equalization: " << endl;
-    long long OrderOfPolynominal = 0;
-    cin >> OrderOfPolynominal;
-
-    Equalization<T>* Newbie = NULL;
-    try
-    {
-        Newbie = new Equalization<T>(OrderOfPolynominal);
-    }
-    catch (exception e)
-    {
-        clog << "An exception occured" << endl;
-    }
-
-    double R = 0;
-    double I = 0;
-
-    for (int i = OrderOfPolynominal; i >= 0; i--)
-    {
-        cout << "Coef by (input like : *real *img)" << i << ":\n";
-        string str;
-        cin >> str;
-
-        R = stoi(str);
-
-        cin >> str;
-        I = stoi(str);
-
-        Newbie->Set(i, T(R, I));
-    }
-
-    cout << "Created polynominal: " << *Newbie << endl;
-    cout << "Press any key" << endl;
-    getch();
-
-    //Menu1(Newbie);
-}
-*/
 template<typename T>
 void Menu1() {
     try
@@ -276,9 +230,11 @@ int main()
             Menu1<double>();
             break;
         case 52:
+            cout << "type - complex(float)" << endl;
             Menu1<std::complex<float>>();
             break;
         case 53:
+            cout << "type - complex(double)" << endl;
             Menu1<complex<double>>();
             break;
         case 27:
